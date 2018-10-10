@@ -1,0 +1,14 @@
+sudo: false
+language: perl
+perl:
+   - '5.26'
+   - '5.18'
+   - '5.16'
+   - '5.10'
+
+install:
+   - cpanm -n -q --skip-satisfied Dist::Zilla
+   - "dzil authordeps          --missing | grep -vP '[^\\w:]' | xargs -n 5 -P 10 cpanm -n -q"
+   - "dzil listdeps   --author --missing | grep -vP '[^\\w:]' | cpanm -n -q"
+script:
+   - dzil smoke --release --author
